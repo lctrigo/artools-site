@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-white text-slate-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precision Series | Premium Tech Pen</title>
+    
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (CDN for standalone usage) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        surface: '#fafafa',
+                        ink: '#111111',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Icons (Lucide via Iconify) -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    
+    <!-- Animation Stack (GSAP + ScrollTrigger + Lenis Smooth Scroll) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+    <style>
+        /* Base / Reset */
+        body {
+            background-color: #ffffff;
+            color: #111111;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Typography Details */
+        .text-outline {
+            color: transparent;
+            -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.2);
+            transition: -webkit-text-stroke 0.4s ease;
+        }
+        .text-outline:hover {
+            -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.6);
+        }
+        
+        /* Shimmer Base (Premium Effect for Light Mode) */
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes shimmer { 
+            from { transform: translateX(-100%) skewX(-15deg); } 
+            to { transform: translateX(200%) skewX(-15deg); } 
+        }
+        
+        /* Video Container Setup */
+        .video-wrapper {
+            position: absolute;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            will-change: transform;
+            perspective: 1000px;
+            z-index: 0;
+        }
+        
+        /* Flawless blending for video over white */
+        video {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            mix-blend-mode: multiply; /* Perfect for creating transparency on white/grey backgrounds */
+            /* Light drop-shadow to simulate premium levitation */
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.06));
+            will-change: transform, opacity;
+        }
+
+        /* Hide scrollbar for clean look */
+        ::-webkit-scrollbar { display: none; }
+        
+        /* Pinned Section */
+        .pinned-section {
+            height: 100vh;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        /* Menu Blur */
+        .glass-header {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="selection:bg-black/10 selection:text-black">
+
+    <!-- Vertical Navigation Tracker (Fixed Side Nav) -->
+    <div class="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-[60] flex flex-col items-center gap-5 opacity-0 reveal-item mix-blend-multiply transition-all duration-300" id="side-nav">
+        <!-- Number -->
+        <div class="nav-number font-mono text-[10px] text-slate-500 tracking-widest relative overflow-hidden flex h-4 items-center justify-center w-6">
+            <span class="nav-current absolute w-full text-center">01</span>
+        </div>
+        
+        <!-- Progress Line (Animated by GSAP) -->
+        <div class="nav-line w-[1px] h-16 md:h-24 bg-slate-200 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-full bg-slate-800 origin-top scale-y-0" id="nav-progress-bar"></div>
+        </div>
+        
+        <!-- Arrows -->
+        <div class="flex flex-col gap-2 text-slate-400">
+            <button id="nav-up-btn" class="nav-btn hover:text-black transition-colors duration-300 relative group flex items-center justify-center w-6 h-6 outline-none">
+                <iconify-icon icon="lucide:arrow-up" class="block transform transition-transform duration-300 group-hover:-translate-y-1 text-xs"></iconify-icon>
+            </button>
+            <button id="nav-down-btn" class="nav-btn hover:text-black transition-colors duration-300 relative group flex items-center justify-center w-6 h-6 outline-none">
+                <iconify-icon icon="lucide:arrow-down" class="block transform transition-transform duration-300 group-hover:translate-y-1 text-xs"></iconify-icon>
+            </button>
+        </div>
+    </div>
+
+    <!-- Navbar / Header -->
+    <header class="fixed top-0 left-0 w-full z-50 px-6 md:px-12 py-5 flex justify-between items-center glass-header border-b border-slate-100/50 reveal-item transition-all duration-300">
+        <div class="font-display font-bold text-xl tracking-tighter flex items-center gap-2 cursor-pointer">
+            ARTOOLS<span class="text-slate-300">/</span><span class="text-[10px] font-mono tracking-widest text-slate-500 font-normal uppercase">Precision</span>
+        </div>
+        
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex gap-10 font-mono text-[10px] uppercase tracking-widest text-slate-500 font-semibold items-center">
+            <a href="#" class="hover:text-black transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:bg-black hover:after:w-full after:transition-all">Overview</a>
+            <a href="#" class="hover:text-black transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:bg-black hover:after:w-full after:transition-all">Design</a>
+            <a href="#" class="hover:text-black transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:bg-black hover:after:w-full after:transition-all">Tech Specs</a>
+        </nav>
+        
+        <!-- CTA -->
+        <div class="flex items-center gap-6">
+            <a href="#" class="font-mono text-[10px] border border-slate-200 px-5 py-2.5 rounded-full uppercase tracking-widest hover:bg-black hover:text-white hover:border-black transition-all text-slate-800 font-bold hidden sm:block">Pre-Order</a>
+            <button class="md:hidden text-2xl text-slate-800"><iconify-icon icon="lucide:menu"></iconify-icon></button>
+        </div>
+    </header>
+
+    <!-- Scroll Track container to drive the video timeline -->
+    <!-- Lowered height from 400vh to 250vh to make the scroll sequence faster and snappier -->
+    <div class="scroll-space w-full" style="height: 250vh;">
+        
+        <!-- Pinned Content (Stays on screen while scrolling) -->
+        <main class="pinned-section relative w-full h-screen overflow-hidden" id="hero-pin">
+            
+            <!-- Background Video Wrapper -->
+            <div class="video-wrapper pointer-events-none" id="video-wrapper">
+                <video 
+                    id="hero-video"
+                    src="assets/raw_files/video2.mp4" 
+                    muted 
+                    playsinline 
+                    preload="auto"
+                    class="opacity-0 w-full h-full object-cover">
+                </video>
+                
+                <!-- Micro UI Element 1: Material Hint -->
+                <div class="absolute top-[30%] right-[10%] flex items-center gap-3 opacity-0 ui-element pointer-events-none">
+                    <div class="w-10 h-[1px] bg-slate-400"></div>
+                    <span class="font-mono text-[9px] text-slate-500 tracking-[0.2em]">Ti-6Al-4V</span>
+                </div>
+                
+                <!-- Micro UI Element 2: Nib Hint -->
+                <div class="absolute bottom-[25%] left-[10%] flex flex-col gap-3 opacity-0 ui-element pointer-events-none">
+                    <div class="w-1.5 h-1.5 rounded-full bg-slate-800 shadow-[0_0_10px_rgba(0,0,0,0.15)] relative z-10 ml-0.5"></div>
+                    <div class="w-[1px] h-12 bg-gradient-to-t from-slate-400 to-transparent ml-1 -mt-1"></div>
+                    <span class="font-mono text-[9px] text-slate-500 tracking-[0.2em] ml-[-12px]">0.4MM TIP</span>
+                </div>
+            </div>
+
+            <!-- Overlay Content (Text & CTAs) -->
+            <div class="relative z-10 w-full h-full flex flex-col items-start justify-end lg:justify-center px-6 md:px-12 lg:px-24 pb-28 md:pb-36 lg:pb-0 pointer-events-none content-wrapper">
+                
+                <!-- Headline & Controls Wrapper -->
+                <div class="flex flex-col items-start text-left max-w-3xl opacity-100">
+                    
+                    <!-- Label -->
+                    <div class="overflow-hidden mb-6">
+                        <div class="flex items-center gap-3 font-mono text-[10px] tracking-[0.3em] uppercase text-slate-500 reveal-item mix-blend-multiply">
+                            <span class="w-1.5 h-1.5 rounded-full bg-black animate-pulse shadow-[0_0_8px_rgba(0,0,0,0.3)]"></span>
+                            Precision Series
+                        </div>
+                    </div>
+                    
+                    <!-- Headline (3 Layers: Solid, Outline, Solid) -->
+                    <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.95] mb-8 text-black mix-blend-multiply">
+                        <div class="overflow-hidden pb-1"><div class="reveal-item flex gap-4 justify-start">Write <span class="text-outline italic">with</span></div></div>
+                        <div class="overflow-hidden pb-1"><div class="reveal-item">absolute clarity.</div></div>
+                    </h1>
+                    
+                    <!-- Paragrpah -->
+                    <div class="overflow-hidden mb-12">
+                        <p class="font-sans text-slate-600 text-sm md:text-base leading-relaxed max-w-md reveal-item font-medium mix-blend-multiply">
+                            Engineered from aerospace-grade aero-titanium. The perfect balance of weight, aerodynamics, and a timeless minimalist aesthetic.
+                        </p>
+                    </div>
+                    
+                    <!-- CTAs -->
+                    <div class="flex flex-col sm:flex-row items-start lg:items-center justify-start gap-4 overflow-hidden pt-2 pointer-events-auto w-full sm:w-auto">
+                        
+                        <!-- Primary Button -->
+                        <div class="reveal-item w-full sm:w-auto">
+                            <a href="#" class="w-full sm:w-auto group relative flex items-center justify-center overflow-hidden rounded-full p-[1px] leading-none text-white drop-shadow-lg hover:scale-[1.03] transition-transform duration-300">
+                                <span class="absolute inset-[-1000%] animate-[spin_2.5s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_340deg,rgba(0,0,0,0.8)_360deg)] opacity-40"></span>
+                                <span class="relative flex h-full w-full items-center justify-center rounded-full bg-[#111] px-8 py-4 ring-1 ring-black/10 overflow-hidden transition-all group-hover:bg-black">
+                                    <span class="absolute top-0 left-0 h-full w-full -skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:animate-[shimmer_1s_infinite] group-hover:opacity-100 pointer-events-none"></span>
+                                    <span class="relative z-10 font-mono text-[9px] uppercase tracking-[0.25em] font-bold">
+                                        Pre-order Now
+                                    </span>
+                                    <iconify-icon class="relative z-10 ml-3 text-sm group-hover:translate-x-1 transition-transform" icon="lucide:arrow-right"></iconify-icon>
+                                </span>
+                            </a>
+                        </div>
+                        
+                        <!-- Secondary Button -->
+                        <div class="reveal-item w-full sm:w-auto">
+                            <a href="#" class="w-full sm:w-auto group flex items-center justify-center gap-3 px-8 py-4 rounded-full border border-slate-300 text-slate-800 bg-white/50 backdrop-blur-sm font-mono text-[9px] uppercase tracking-[0.25em] hover:bg-white hover:text-black transition-all duration-300">
+                                <span>Tech Specs</span>
+                                <iconify-icon class="text-xs opacity-50 group-hover:opacity-100 transition-opacity" icon="lucide:info"></iconify-icon>
+                            </a>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- Micro UI Element 3: Index Tracker -->
+            <div class="absolute bottom-10 right-8 font-mono text-[10px] text-slate-400 opacity-0 ui-element tabular-nums pointer-events-none tracking-widest hidden md:block z-10">
+                [<span id="video-frame-tracker">000</span>]
+            </div>
+
+            <!-- Bottom safe scroll hint layout -->
+            <div class="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-50 parallax-hint reveal-item z-10 pointer-events-none delay-500">
+                <span class="font-mono text-[8px] uppercase tracking-[0.3em] text-slate-600">Scroll</span>
+                <div class="w-[1px] h-8 md:h-12 bg-gradient-to-b from-slate-400 to-transparent"></div>
+            </div>
+            
+        </main>
+        
+    </div>
+
+    <script>
+        // --------------------------------------------------------
+        // 1. Lenis Smooth Scroll Configuration (Ultra Fast & Snappy)
+        // --------------------------------------------------------
+        const lenis = new Lenis({
+            duration: 0.4, // Reduced heavily for instant snappy response
+            easing: (t) => 1 - Math.pow(1 - t, 4), // Quicker out ease
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1.5,
+            touchMultiplier: 2.5,
+        });
+
+        // Sync Lenis with GSAP ScrollTrigger
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => { lenis.raf(time * 1000) });
+        gsap.ticker.lagSmoothing(0);
+
+        // --------------------------------------------------------
+        // 2. Setup Elements & Boot
+        // --------------------------------------------------------
+        const video = document.getElementById('hero-video');
+        const frameTracker = document.getElementById('video-frame-tracker');
+        
+        let videoDuration = 0.1; 
+        let isVideoReady = false;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initUIAnimations();
+            
+            // Wait for video to be somewhat loadable before setting up scrub
+            if (video.readyState >= 1) {
+                setupVideoScrub();
+            } else {
+                video.addEventListener('loadedmetadata', setupVideoScrub);
+                setTimeout(setupVideoScrub, 1000); // hard fallback
+            }
+        });
+
+        // --------------------------------------------------------
+        // 3. Animation Sequences (GSAP) ULTRA FAST
+        // --------------------------------------------------------
+        function initUIAnimations() {
+            const tl = gsap.timeline();
+            
+            gsap.set(".reveal-item", { y: 20, opacity: 0 }); 
+            gsap.set(".ui-element", { opacity: 0, scale: 0.95 });
+            
+            // Subtly animate the video container instead of just canvas
+            gsap.to("#hero-video", {
+                y: -10,
+                duration: 4,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
+
+            // Play intro sequence UI (Ultra Fast)
+            tl.to(".reveal-item", {
+                y: 0,
+                opacity: 1,
+                duration: 0.4, // ultra fast
+                stagger: 0.04, 
+                ease: "power3.out"
+            })
+            .to(".ui-element", {
+                opacity: 1,
+                scale: 1,
+                duration: 0.6,
+                stagger: 0.1,
+                ease: "power2.out"
+            }, "-=0.2"); 
+
+            // Interpolation Fade Out on scroll
+            gsap.to(".content-wrapper", {
+                y: -80,
+                opacity: 0,
+                filter: "blur(6px)",
+                scrollTrigger: {
+                    trigger: ".scroll-space",
+                    start: "top top",
+                    end: "50% top",
+                    scrub: true // instant
+                }
+            });
+            
+            gsap.to(".ui-element", {
+                y: (i) => [60, -40, 30][i] || 30,
+                opacity: 0,
+                scrollTrigger: {
+                    trigger: ".scroll-space",
+                    start: "10% top",
+                    end: "bottom bottom",
+                    scrub: true
+                }
+            });
+            
+            gsap.to(".parallax-hint", {
+                y: 50,
+                opacity: 0,
+                scrollTrigger: {
+                    trigger: ".scroll-space",
+                    start: "top top",
+                    end: "20% top",
+                    scrub: true
+                }
+            });
+        }
+
+        // --------------------------------------------------------
+        // 4. GSAP Native Video Scrub (Optimized)
+        // --------------------------------------------------------
+        function setupVideoScrub() {
+            if(isVideoReady) return; 
+            isVideoReady = true;
+            
+            // Fade Video in immediately
+            gsap.to(video, { opacity: 1, duration: 0.5, ease: "power2.inOut" });
+            videoDuration = video.duration || 5;
+
+            ScrollTrigger.create({
+                trigger: ".scroll-space",
+                start: "top top",
+                end: "bottom bottom",
+                pin: "#hero-pin",
+                scrub: true
+            });
+
+            // Map progress to Video Current Time efficiently 
+            let tlVideo = gsap.timeline({
+                scrollTrigger: {
+                    trigger: ".scroll-space",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: true, // Use pure true for minimal delay
+                    onUpdate: (self) => {
+                        if(frameTracker) {
+                            frameTracker.innerText = Math.floor(self.progress * 360).toString().padStart(3, '0');
+                        }
+                        const navProgressBar = document.getElementById("nav-progress-bar");
+                        if(navProgressBar) {
+                            gsap.set(navProgressBar, { scaleY: self.progress });
+                        }
+                    }
+                }
+            });
+
+            tlVideo.fromTo(video, 
+                { currentTime: 0 }, 
+                { currentTime: videoDuration, ease: "none" }
+            );
+
+            // Side Navigation Smooth Scroll logic (Fast)
+            const navUpBtn = document.getElementById("nav-up-btn");
+            const navDownBtn = document.getElementById("nav-down-btn");
+
+            if (navUpBtn && navDownBtn) {
+                navUpBtn.addEventListener("click", () => {
+                    lenis.scrollTo(0, { duration: 0.6, easing: (t) => 1 - Math.pow(1 - t, 4) });
+                });
+
+                navDownBtn.addEventListener("click", () => {
+                    lenis.scrollTo(".scroll-space", { offset: document.querySelector(".scroll-space").offsetHeight, duration: 0.6, easing: (t) => 1 - Math.pow(1 - t, 4) });
+                });
+            }
+        }
+    </script>
+</body>
+</html>
