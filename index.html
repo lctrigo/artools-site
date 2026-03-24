@@ -111,8 +111,15 @@
             -webkit-backdrop-filter: blur(12px);
         }
     </style>
-</head>
 <body class="selection:bg-black/10 selection:text-black">
+
+    <!-- Loading Screen (Micro-minimalist) -->
+    <div id="loading-screen" class="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center transition-opacity duration-1000">
+        <div class="font-mono text-xs text-slate-400 tracking-[0.2em] mb-4 uppercase animate-pulse">Syncing Precision...</div>
+        <div class="w-48 h-[1px] bg-slate-200 relative overflow-hidden">
+            <div id="loading-bar" class="absolute top-0 left-0 h-full bg-slate-800 w-0 transition-all duration-300"></div>
+        </div>
+    </div>
 
     <!-- Vertical Navigation Tracker (Fixed Side Nav) -->
     <div class="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-[60] flex flex-col items-center gap-5 opacity-0 reveal-item mix-blend-multiply transition-all duration-300" id="side-nav">
@@ -164,16 +171,12 @@
         <!-- Pinned Content (Stays on screen while scrolling) -->
         <main class="pinned-section relative w-full h-screen overflow-hidden" id="hero-pin">
             
-            <!-- Background Video Wrapper -->
+            <!-- Background Canvas Wrapper for Extracted Frames -->
             <div class="video-wrapper pointer-events-none" id="video-wrapper">
-                <video 
-                    id="hero-video"
-                    src="assets/raw_files/video2.mp4" 
-                    muted 
-                    playsinline 
-                    preload="auto"
-                    class="opacity-0 w-full h-full object-cover">
-                </video>
+                <canvas 
+                    id="hero-canvas"
+                    class="opacity-0 w-full h-full object-cover transform scale-[1.05]">
+                </canvas>
                 
                 <!-- Micro UI Element 1: Material Hint -->
                 <div class="absolute top-[30%] right-[10%] flex items-center gap-3 opacity-0 ui-element pointer-events-none">
@@ -281,106 +284,175 @@
         gsap.ticker.lagSmoothing(0);
 
         // --------------------------------------------------------
-        // 2. Setup Elements & Boot
+        // 2. Setup Elements & Frame Sequence Loader
         // --------------------------------------------------------
-        const video = document.getElementById('hero-video');
+        const canvas = document.getElementById('hero-canvas');
+        const context = canvas.getContext('2d');
         const frameTracker = document.getElementById('video-frame-tracker');
         
-        let videoDuration = 0.1; 
-        let isVideoReady = false;
+        // CONFIGURATION: Number of frames in assets/raw_files/frames/
+        const frameCount = 192; 
+        const currentFramePath = index => (
+            `assets/raw_files/frames/frame_${(index + 1).toString().padStart(3, '0')}.jpg`
+        );
+        
+        const frames = []; 
+        const canvasVideo = { frame: 0 }; 
 
         document.addEventListener("DOMContentLoaded", () => {
-            initUIAnimations();
-            
-            // Wait for video to be somewhat loadable before setting up scrub
-            if (video.readyState >= 1) {
-                setupVideoScrub();
-            } else {
-                video.addEventListener('loadedmetadata', setupVideoScrub);
-                setTimeout(setupVideoScrub, 1000); // hard fallback
+            // Resize Canvas dynamically
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                render(); 
             }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            loadFrameSequence();
         });
+
+        // ========================================================
+        // LOAD PRE-EXPORTED IMAGE SEQUENCE
+        // ========================================================
+        function loadFrameSequence() {
+            let loadedCount = 0;
+            const loadingBar = document.getElementById("loading-bar");
+
+            for (let i = 0; i < frameCount; i++) {
+                const img = new Image();
+                img.src = currentFramePath(i);
+                frames.push(img);
+
+                img.onload = () => {
+                    loadedCount++;
+                    const progress = (loadedCount / frameCount) * 100;
+                    if(loadingBar) loadingBar.style.width = progress + "%";
+
+                    if (loadedCount === 1) {
+                        // Render first frame immediately for instant visual
+                        render();
+                        gsap.to(canvas, { opacity: 1, duration: 1 });
+                    }
+
+                    if (loadedCount === frameCount) {
+                        finishLoading();
+                    }
+                };
+
+                // Error fallback for missing frames
+                img.onerror = () => {
+                   loadedCount++;
+                   if (loadedCount === frameCount) finishLoading();
+                };
+            }
+        }
+
+        function finishLoading() {
+            const loadingScreen = document.getElementById("loading-screen");
+            loadingScreen.style.opacity = "0";
+            setTimeout(() => loadingScreen.style.display = "none", 1000);
+
+            initUIAnimations();
+            setupCanvasScrub(frameCount);
+        }
+
+        function render() {
+            if(!frames[canvasVideo.frame]) return;
+            const img = frames[canvasVideo.frame];
+            
+            // "Object-fit: cover" logic for Canvas
+            const hRatio = canvas.width / img.width;
+            const vRatio = canvas.height / img.height;
+            const ratio  = Math.max(hRatio, vRatio);
+            
+            const centerShift_x = (canvas.width - img.width * ratio) / 2;
+            const centerShift_y = (canvas.height - img.height * ratio) / 2;  
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.drawImage(img, 0, 0, img.width, img.height,
+                              centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
+        }
 
         // --------------------------------------------------------
         // 3. Animation Sequences (GSAP) ULTRA FAST
         // --------------------------------------------------------
         function initUIAnimations() {
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             const tl = gsap.timeline();
-            
-            gsap.set(".reveal-item", { y: 20, opacity: 0 }); 
-            gsap.set(".ui-element", { opacity: 0, scale: 0.95 });
-            
-            // Subtly animate the video container instead of just canvas
-            gsap.to("#hero-video", {
-                y: -10,
-                duration: 4,
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut"
-            });
 
-            // Play intro sequence UI (Ultra Fast)
-            tl.to(".reveal-item", {
-                y: 0,
-                opacity: 1,
-                duration: 0.4, // ultra fast
-                stagger: 0.04, 
-                ease: "power3.out"
-            })
-            .to(".ui-element", {
-                opacity: 1,
-                scale: 1,
-                duration: 0.6,
-                stagger: 0.1,
-                ease: "power2.out"
-            }, "-=0.2"); 
+            if (prefersReducedMotion) {
+                gsap.set(".reveal-item, .ui-element, #side-nav", { y: 0, opacity: 1, scale: 1 });
+                gsap.set(".content-wrapper", { filter: "none" });
+            } else {
+                gsap.set(".reveal-item", { y: 20, opacity: 0 }); 
+                gsap.set(".ui-element", { opacity: 0, scale: 0.95 });
+                
+                // Subtly animate the canvas to breathe life 
+                gsap.to(canvas, {
+                    y: -10,
+                    duration: 4,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut"
+                });
 
-            // Interpolation Fade Out on scroll
-            gsap.to(".content-wrapper", {
-                y: -80,
-                opacity: 0,
-                filter: "blur(6px)",
-                scrollTrigger: {
-                    trigger: ".scroll-space",
-                    start: "top top",
-                    end: "50% top",
-                    scrub: true // instant
-                }
-            });
-            
-            gsap.to(".ui-element", {
-                y: (i) => [60, -40, 30][i] || 30,
-                opacity: 0,
-                scrollTrigger: {
-                    trigger: ".scroll-space",
-                    start: "10% top",
-                    end: "bottom bottom",
-                    scrub: true
-                }
-            });
-            
-            gsap.to(".parallax-hint", {
-                y: 50,
-                opacity: 0,
-                scrollTrigger: {
-                    trigger: ".scroll-space",
-                    start: "top top",
-                    end: "20% top",
-                    scrub: true
-                }
-            });
+                // Play intro sequence UI (Independent State: revealed = true)
+                tl.to(".reveal-item", {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.5,
+                    stagger: 0.05, 
+                    ease: "power3.out"
+                })
+                .to(".ui-element", {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.6,
+                    stagger: 0.1,
+                    ease: "power2.out"
+                }, "-=0.2"); 
+
+                // NEW: Make hero content scroll away during the first 25% of the total scroll
+                gsap.to(".content-wrapper", {
+                    y: -150, // Subtle upwards drift
+                    opacity: 0,
+                    scale: 0.98,
+                    filter: "blur(4px)",
+                    scrollTrigger: {
+                        trigger: ".scroll-space",
+                        start: "top top",
+                        end: "25% top",
+                        scrub: true
+                    }
+                });
+
+                // Similar behavior for micro UI elements 
+                gsap.to(".ui-element", {
+                    y: (i) => [100, -80, 50][i] || 50,
+                    opacity: 0,
+                    scrollTrigger: {
+                        trigger: ".scroll-space",
+                        start: "10% top",
+                        end: "35% top",
+                        scrub: true
+                    }
+                });
+            }
         }
 
         // --------------------------------------------------------
-        // 4. GSAP Native Video Scrub (Optimized)
+        // 4. GSAP Canvas Fluid Scrub 
         // --------------------------------------------------------
-        function setupVideoScrub() {
-            if(isVideoReady) return; 
-            isVideoReady = true;
-            
-            // Fade Video in immediately
-            gsap.to(video, { opacity: 1, duration: 0.5, ease: "power2.inOut" });
-            videoDuration = video.duration || 5;
+        function setupCanvasScrub(totalFrames) {
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            if (prefersReducedMotion) {
+                // Instantly render latest frame and bail out of scroll animation
+                canvasVideo.frame = totalFrames - 1;
+                render();
+                return;
+            }
 
             ScrollTrigger.create({
                 trigger: ".scroll-space",
@@ -390,14 +462,18 @@
                 scrub: true
             });
 
-            // Map progress to Video Current Time efficiently 
-            let tlVideo = gsap.timeline({
+            // Animate our "canvasVideo.frame" object value with Premium Micro-inertia (lerp equivalent)
+            gsap.to(canvasVideo, {
+                frame: totalFrames - 1,
+                snap: "frame", 
+                ease: "none",
                 scrollTrigger: {
                     trigger: ".scroll-space",
                     start: "top top",
                     end: "bottom bottom",
-                    scrub: true, // Use pure true for minimal delay
+                    scrub: 1.5, // 1.5s smoothing (Micro-inertia for premium feel)
                     onUpdate: (self) => {
+                        render();
                         if(frameTracker) {
                             frameTracker.innerText = Math.floor(self.progress * 360).toString().padStart(3, '0');
                         }
@@ -408,11 +484,6 @@
                     }
                 }
             });
-
-            tlVideo.fromTo(video, 
-                { currentTime: 0 }, 
-                { currentTime: videoDuration, ease: "none" }
-            );
 
             // Side Navigation Smooth Scroll logic (Fast)
             const navUpBtn = document.getElementById("nav-up-btn");
