@@ -184,12 +184,7 @@
                     <span class="font-mono text-[9px] text-slate-500 tracking-[0.2em]">Ti-6Al-4V</span>
                 </div>
                 
-                <!-- Micro UI Element 2: Nib Hint -->
-                <div class="absolute bottom-[25%] left-[10%] flex flex-col gap-3 opacity-0 ui-element pointer-events-none">
-                    <div class="w-1.5 h-1.5 rounded-full bg-slate-800 shadow-[0_0_10px_rgba(0,0,0,0.15)] relative z-10 ml-0.5"></div>
-                    <div class="w-[1px] h-12 bg-gradient-to-t from-slate-400 to-transparent ml-1 -mt-1"></div>
-                    <span class="font-mono text-[9px] text-slate-500 tracking-[0.2em] ml-[-12px]">0.4MM TIP</span>
-                </div>
+                <!-- Micro UI Element 2 removed as requested -->
             </div>
 
             <!-- Overlay Content (Text & CTAs) -->
@@ -199,7 +194,7 @@
                 <div class="flex flex-col items-start text-left max-w-3xl opacity-100">
                     
                     <!-- Label -->
-                    <div class="overflow-hidden mb-6">
+                    <div class="overflow-hidden mb-6 hero-label">
                         <div class="flex items-center gap-3 font-mono text-[10px] tracking-[0.3em] uppercase text-slate-500 reveal-item mix-blend-multiply">
                             <span class="w-1.5 h-1.5 rounded-full bg-black animate-pulse shadow-[0_0_8px_rgba(0,0,0,0.3)]"></span>
                             Precision Series
@@ -207,20 +202,20 @@
                     </div>
                     
                     <!-- Headline (3 Layers: Solid, Outline, Solid) -->
-                    <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.95] mb-8 text-black mix-blend-multiply">
+                    <h1 class="hero-headline font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.95] mb-8 text-black mix-blend-multiply">
                         <div class="overflow-hidden pb-1"><div class="reveal-item flex gap-4 justify-start">Write <span class="text-outline italic">with</span></div></div>
                         <div class="overflow-hidden pb-1"><div class="reveal-item">absolute clarity.</div></div>
                     </h1>
                     
                     <!-- Paragrpah -->
-                    <div class="overflow-hidden mb-12">
+                    <div class="overflow-hidden mb-12 hero-desc">
                         <p class="font-sans text-slate-600 text-sm md:text-base leading-relaxed max-w-md reveal-item font-medium mix-blend-multiply">
                             Engineered from aerospace-grade aero-titanium. The perfect balance of weight, aerodynamics, and a timeless minimalist aesthetic.
                         </p>
                     </div>
                     
                     <!-- CTAs -->
-                    <div class="flex flex-col sm:flex-row items-start lg:items-center justify-start gap-4 overflow-hidden pt-2 pointer-events-auto w-full sm:w-auto">
+                    <div class="hero-cta flex flex-col sm:flex-row items-start lg:items-center justify-start gap-4 pt-2 pointer-events-auto w-full sm:w-auto">
                         
                         <!-- Primary Button -->
                         <div class="reveal-item w-full sm:w-auto">
@@ -412,32 +407,6 @@
                     stagger: 0.1,
                     ease: "power2.out"
                 }, "-=0.2"); 
-
-                // NEW: Make hero content scroll away during the first 25% of the total scroll
-                gsap.to(".content-wrapper", {
-                    y: -150, // Subtle upwards drift
-                    opacity: 0,
-                    scale: 0.98,
-                    filter: "blur(4px)",
-                    scrollTrigger: {
-                        trigger: ".scroll-space",
-                        start: "top top",
-                        end: "25% top",
-                        scrub: true
-                    }
-                });
-
-                // Similar behavior for micro UI elements 
-                gsap.to(".ui-element", {
-                    y: (i) => [100, -80, 50][i] || 50,
-                    opacity: 0,
-                    scrollTrigger: {
-                        trigger: ".scroll-space",
-                        start: "10% top",
-                        end: "35% top",
-                        scrub: true
-                    }
-                });
             }
         }
 
@@ -485,6 +454,52 @@
                 }
             });
 
+            // Premium Narrative Fade Out for Typography (Staggered hierarchy)
+            gsap.set(".hero-label, .hero-desc, .hero-cta, .hero-headline", { willChange: "transform, opacity, filter" });
+
+            let mm = gsap.matchMedia();
+
+            mm.add("(min-width: 768px)", () => {
+                // Desktop
+                const fadeTl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: ".scroll-space",
+                        start: "10% top", // Perceptual delay
+                        end: "40% top", // End earlier to fade out faster
+                        scrub: 1.5
+                    }
+                });
+
+                // 0. Label fades early
+                fadeTl.to(".hero-label", { opacity: 0, y: -10, duration: 1 }, 0);
+                // 1. Description fades and moves up
+                fadeTl.to(".hero-desc", { opacity: 0, y: -20, filter: "blur(4px)", duration: 1 }, 0.1);
+                // 2. Buttons fade and move up
+                fadeTl.to(".hero-cta", { opacity: 0, y: -15, duration: 1 }, 0.2);
+                // 3. Headline fades last and moves up
+                fadeTl.to(".hero-headline", { opacity: 0, y: -30, filter: "blur(6px)", duration: 1.5 }, 0.4);
+            });
+
+            mm.add("(max-width: 767px)", () => {
+                // Mobile (No blur, CTA stays somewhat visible)
+                const fadeTl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: ".scroll-space",
+                        start: "5% top", 
+                        end: "35% top", // End earlier to fade out faster
+                        scrub: 1.5
+                    }
+                });
+
+                // 0. Label
+                fadeTl.to(".hero-label", { opacity: 0, y: -5, duration: 1 }, 0);
+                // 1. Description
+                fadeTl.to(".hero-desc", { opacity: 0, y: -10, duration: 1 }, 0.1);
+                // 2. Buttons (Visibility maintained at 30% min)
+                fadeTl.to(".hero-cta", { opacity: 0.3, y: -5, duration: 1 }, 0.2);
+                // 3. Headline
+                fadeTl.to(".hero-headline", { opacity: 0, y: -15, duration: 1.5 }, 0.4);
+            });
             // Side Navigation Smooth Scroll logic (Fast)
             const navUpBtn = document.getElementById("nav-up-btn");
             const navDownBtn = document.getElementById("nav-down-btn");
