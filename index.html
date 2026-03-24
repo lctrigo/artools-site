@@ -259,17 +259,44 @@
         
     </div>
 
+    <!-- SEÇÃO DE TESTE: Para confirmar que o resto do site flui normalmente -->
+    <section class="relative bg-white min-h-screen py-32 px-6 md:px-24 flex flex-col justify-center items-start border-t border-slate-100 z-50">
+        <div class="max-w-4xl">
+            <span class="font-mono text-[10px] tracking-widest text-slate-400 uppercase mb-4 block">Section 02 / Design Details</span>
+            <h2 class="font-display text-4xl md:text-6xl font-bold tracking-tighter mb-8 text-black">A nova era do design.</h2>
+            <p class="font-sans text-slate-600 text-lg leading-relaxed max-w-2xl mb-12">
+                Diferente do Hero que bloqueia o scroll para contar uma história, aqui o conteúdo flui de forma tradicional. Você pode rolar livremente, ler os textos e interagir com os elementos sem as travas automatizadas que configuramos exclusivamente para o topo.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 font-sans">
+                <div>
+                    <h3 class="font-display font-semibold text-xl mb-3">Ergonomia</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">Projetada para sessões de escrita prolongadas sem fadiga.</p>
+                </div>
+                <div>
+                    <h3 class="font-display font-semibold text-xl mb-3">Durabilidade</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">Corpo em titânio aeroespacial resistente a quedas e riscos.</p>
+                </div>
+                <div>
+                    <h3 class="font-display font-semibold text-xl mb-3">Versatilidade</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">Compatibilidade com todos os principais refis premium.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <script>
         // --------------------------------------------------------
         // 1. Lenis Smooth Scroll Configuration (Ultra Fast & Snappy)
         // --------------------------------------------------------
         const lenis = new Lenis({
-            duration: 0.4, // Reduced heavily for instant snappy response
-            easing: (t) => 1 - Math.pow(1 - t, 4), // Quicker out ease
+            duration: 1.5, // Aumentado significativamente para suavizar mouses com roda de 'clique'
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
             direction: 'vertical',
             gestureDirection: 'vertical',
             smooth: true,
-            mouseMultiplier: 1.5,
+            smoothWheel: true,
+            mouseMultiplier: 1, // Reduzido para evitar pulos grandes a cada clique
             touchMultiplier: 2.5,
         });
 
@@ -353,8 +380,9 @@
         }
 
         function render() {
-            if(!frames[canvasVideo.frame]) return;
-            const img = frames[canvasVideo.frame];
+            const currentFrame = Math.round(canvasVideo.frame);
+            if(!frames[currentFrame]) return;
+            const img = frames[currentFrame];
             
             // "Object-fit: cover" logic for Canvas
             const hRatio = canvas.width / img.width;
@@ -364,141 +392,154 @@
             const centerShift_x = (canvas.width - img.width * ratio) / 2;
             const centerShift_y = (canvas.height - img.height * ratio) / 2;  
 
-            context.clearRect(0, 0, canvas.width, canvas.height);
             context.drawImage(img, 0, 0, img.width, img.height,
                               centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
         }
 
         // --------------------------------------------------------
-        // 3. Animation Sequences (GSAP) ULTRA FAST
+        // 3. Global Design System Animations (Reveals & Hovers)
         // --------------------------------------------------------
         function initUIAnimations() {
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            const tl = gsap.timeline();
-
             if (prefersReducedMotion) {
                 gsap.set(".reveal-item, .ui-element, #side-nav", { y: 0, opacity: 1, scale: 1 });
-                gsap.set(".content-wrapper", { filter: "none" });
-            } else {
-                gsap.set(".reveal-item", { y: 20, opacity: 0 }); 
-                gsap.set(".ui-element", { opacity: 0, scale: 0.95 });
-                
-                // Subtly animate the canvas to breathe life 
-                gsap.to(canvas, {
-                    y: -10,
-                    duration: 4,
-                    repeat: -1,
-                    yoyo: true,
-                    ease: "sine.inOut"
-                });
-
-                // Play intro sequence UI (Independent State: revealed = true)
-                tl.to(".reveal-item", {
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.5,
-                    stagger: 0.05, 
-                    ease: "power3.out"
-                })
-                .to(".ui-element", {
-                    opacity: 1,
-                    scale: 1,
-                    duration: 0.6,
-                    stagger: 0.1,
-                    ease: "power2.out"
-                }, "-=0.2"); 
+                return;
             }
+
+            // A. REVELAÇÃO DA HERO (Imediata ao carregar)
+            // Filtramos apenas itens que estão dentro da main/header da hero
+            const heroItems = document.querySelectorAll('header .reveal-item, #hero-pin .reveal-item');
+            gsap.set(heroItems, { y: 20, opacity: 0 });
+            
+            gsap.to(heroItems, {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: "power3.out",
+                delay: 0.5 // Aguarda o loading screen sumir
+            });
+
+            // B. REVELAÇÃO GLOBAL (Scroll-triggered para o resto do site)
+            // Itens que NÃO estão na hero serão revelados conforme o usuário desce
+            const otherItems = document.querySelectorAll('section .reveal-item');
+            otherItems.forEach((item) => {
+                gsap.set(item, { y: 30, opacity: 0 });
+                ScrollTrigger.create({
+                    trigger: item,
+                    start: "top 90%", // Revela quando o item está quase entrando na tela
+                    onEnter: () => {
+                        gsap.to(item, {
+                            y: 0,
+                            opacity: 1,
+                            duration: 1,
+                            ease: "power2.out",
+                            overwrite: "auto"
+                        });
+                    }
+                });
+            });
+
+            // Micro Elementos Decorativos (Hero)
+            gsap.set(".ui-element", { opacity: 0, scale: 0.95 });
+            gsap.to(".ui-element", {
+                opacity: 1,
+                scale: 1,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power2.out",
+                delay: 1
+            });
+            
+            // Respirar o Canvas
+            gsap.to(canvas, {
+                y: -10,
+                duration: 4,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
         }
 
         // --------------------------------------------------------
-        // 4. GSAP Canvas Fluid Scrub 
+        // 4. GSAP Automated Block Scrubber (Exclusive for Hero)
         // --------------------------------------------------------
         function setupCanvasScrub(totalFrames) {
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
             if (prefersReducedMotion) {
-                // Instantly render latest frame and bail out of scroll animation
                 canvasVideo.frame = totalFrames - 1;
                 render();
                 return;
             }
 
+            // Pinned Section Container (Hero ONLY)
             ScrollTrigger.create({
                 trigger: ".scroll-space",
                 start: "top top",
                 end: "bottom bottom",
                 pin: "#hero-pin",
-                scrub: true
+                // Esta zona fixada é exclusiva para este bloco
             });
 
-            // Animate our "canvasVideo.frame" object value with Premium Micro-inertia (lerp equivalent)
-            gsap.to(canvasVideo, {
-                frame: totalFrames - 1,
-                snap: "frame", 
-                ease: "none",
+            // Master Timeline (Automatizada e exclusiva para o Hero)
+            const mainTl = gsap.timeline({
                 scrollTrigger: {
                     trigger: ".scroll-space",
-                    start: "top top",
+                    start: "1px top", 
                     end: "bottom bottom",
-                    scrub: 1.5, // 1.5s smoothing (Micro-inertia for premium feel)
-                    onUpdate: (self) => {
-                        render();
-                        if(frameTracker) {
-                            frameTracker.innerText = Math.floor(self.progress * 360).toString().padStart(3, '0');
-                        }
-                        const navProgressBar = document.getElementById("nav-progress-bar");
-                        if(navProgressBar) {
-                            gsap.set(navProgressBar, { scaleY: self.progress });
-                        }
-                    }
+                    toggleActions: "play none reverse reverse"
                 }
             });
 
-            // Premium Narrative Fade Out for Typography (Staggered hierarchy)
+            // 1. ANIMAÇÃO DIVIDIDA PARA "PESAR" NO FINAL (Onde a caneta escreve)
+            // Segmento 1: O "Giro" inicial (Mais ágil, mas ainda suave)
+            mainTl.to(canvasVideo, {
+                frame: 110,
+                ease: "power2.in", // Começa lento e ganha fluidez
+                duration: 3, 
+                onUpdate: () => render()
+            }, 0);
+
+            // Segmento 2: O "Flow da Escrita" (Muita calma e precisão nesta parte final)
+            mainTl.to(canvasVideo, {
+                frame: totalFrames - 1,
+                ease: "power2.out", // Termina com uma desaceleração profunda e majestosa
+                duration: 5, // Damos 5 segundos apenas para essa parte final, garantindo o "flow"
+                onUpdate: () => {
+                    render();
+                    if(frameTracker) {
+                        frameTracker.innerText = Math.floor((canvasVideo.frame / (totalFrames - 1)) * 360).toString().padStart(3, '0');
+                    }
+                }
+            }, 3); // Inicia após os 3 segundos do primeiro bloco
+
+            // 2. Barra Lateral sincroniza com o progresso total da Master Timeline
+            mainTl.eventCallback("onUpdate", function() {
+                const navProgressBar = document.getElementById("nav-progress-bar");
+                if(navProgressBar) {
+                    gsap.set(navProgressBar, { scaleY: this.progress() });
+                }
+            });
+
+            // Premium Narrative Fade Out (Sincronizado milimetricamente)
             gsap.set(".hero-label, .hero-desc, .hero-cta, .hero-headline", { willChange: "transform, opacity, filter" });
 
             let mm = gsap.matchMedia();
 
             mm.add("(min-width: 768px)", () => {
-                // Desktop
-                const fadeTl = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: ".scroll-space",
-                        start: "10% top", // Perceptual delay
-                        end: "40% top", // End earlier to fade out faster
-                        scrub: 1.5
-                    }
-                });
-
-                // 0. Label fades early
-                fadeTl.to(".hero-label", { opacity: 0, y: -10, duration: 1 }, 0);
-                // 1. Description fades and moves up
-                fadeTl.to(".hero-desc", { opacity: 0, y: -20, filter: "blur(4px)", duration: 1 }, 0.1);
-                // 2. Buttons fade and move up
-                fadeTl.to(".hero-cta", { opacity: 0, y: -15, duration: 1 }, 0.2);
-                // 3. Headline fades last and moves up
-                fadeTl.to(".hero-headline", { opacity: 0, y: -30, filter: "blur(6px)", duration: 1.5 }, 0.4);
+                // Desktop - Textos saem de cena antes da escrita final dominar
+                mainTl.to(".hero-label", { opacity: 0, y: -10, duration: 1 }, 0.5);
+                mainTl.to(".hero-desc", { opacity: 0, y: -20, filter: "blur(4px)", duration: 1.5 }, 0.8);
+                mainTl.to(".hero-cta", { opacity: 0, y: -15, duration: 1.5 }, 1.0);
+                mainTl.to(".hero-headline", { opacity: 0, y: -30, filter: "blur(6px)", duration: 2.0 }, 1.2);
             });
 
             mm.add("(max-width: 767px)", () => {
-                // Mobile (No blur, CTA stays somewhat visible)
-                const fadeTl = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: ".scroll-space",
-                        start: "5% top", 
-                        end: "35% top", // End earlier to fade out faster
-                        scrub: 1.5
-                    }
-                });
-
-                // 0. Label
-                fadeTl.to(".hero-label", { opacity: 0, y: -5, duration: 1 }, 0);
-                // 1. Description
-                fadeTl.to(".hero-desc", { opacity: 0, y: -10, duration: 1 }, 0.1);
-                // 2. Buttons (Visibility maintained at 30% min)
-                fadeTl.to(".hero-cta", { opacity: 0.3, y: -5, duration: 1 }, 0.2);
-                // 3. Headline
-                fadeTl.to(".hero-headline", { opacity: 0, y: -15, duration: 1.5 }, 0.4);
+                // Mobile
+                mainTl.to(".hero-label", { opacity: 0, y: -5, duration: 1 }, 0.5);
+                mainTl.to(".hero-desc", { opacity: 0, y: -10, duration: 1.5 }, 0.8);
+                mainTl.to(".hero-cta", { opacity: 0.3, y: -5, duration: 1.5 }, 1.0);
+                mainTl.to(".hero-headline", { opacity: 0, y: -15, duration: 2.0 }, 1.2);
             });
             // Side Navigation Smooth Scroll logic (Fast)
             const navUpBtn = document.getElementById("nav-up-btn");
