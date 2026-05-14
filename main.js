@@ -21,7 +21,7 @@ const frameTracker = document.getElementById('video-frame-tracker');
 // CONFIGURATION: Number of frames in assets/raw_files/frames/
 const frameCount = 192; 
 const currentFramePath = index => (
-    `assets/raw_files/frames/frame_${(index + 1).toString().padStart(3, '0')}.jpg`
+    `raw_files/frames/frame_${(index + 1).toString().padStart(3, '0')}.jpg`
 );
 
 const frames = []; 
