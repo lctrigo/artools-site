@@ -1,0 +1,481 @@
+@import './tokens.css';
+@import "tailwindcss";
+@config "../tailwind.config.js";
+@source "../index.html";
+@source "../pages";
+@source "../components";
+@source "../sections";
+
+/* Base / Reset */
+body {
+    background-color: #ffffff;
+    color: #111111;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography Details */
+.text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.15);
+    transition: -webkit-text-stroke 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.text-outline:hover {
+    -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.5);
+}
+
+/* Shimmer Base (Premium Effect for Light Mode) */
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes shimmer { 
+    from { transform: translateX(-100%) skewX(-15deg); } 
+    to { transform: translateX(200%) skewX(-15deg); } 
+}
+
+/* Video Container Setup */
+.video-wrapper {
+    position: absolute;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform;
+    perspective: 1000px;
+    z-index: 0;
+}
+
+/* Flawless blending for video over white */
+video {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    mix-blend-mode: multiply;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.06));
+    will-change: transform, opacity;
+}
+
+/* Hide scrollbar for clean look */
+::-webkit-scrollbar { display: none; }
+
+/* Pinned Section */
+.pinned-section {
+    height: 100vh;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Menu Blur */
+.glass-header {
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 4px 16px rgba(0,0,0,0.02);
+}
+
+/* ===== SECTION 2 — PREMIUM SYSTEM ===== */
+.bg-offwhite { background-color: #fafaf9; }
+
+.grid-overlay {
+    background-size: 50px 50px;
+    background-image: 
+        linear-gradient(to right, rgba(28, 28, 28, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(28, 28, 28, 0.05) 1px, transparent 1px);
+}
+
+/* Glass Panels (from DS) */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+.dark-glass {
+    background: rgba(28, 28, 28, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Flashlight Card (DS pattern: mouse-tracking radial gradient) */
+.flashlight-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(226, 226, 226, 0.4);
+    transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+    box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.03), 0 0 4px rgba(0,0,0,0.02);
+}
+.flashlight-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(255, 255, 255, 0.85),
+        transparent 40%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+.flashlight-card:hover { 
+    transform: translateY(-2px);
+    border-color: rgba(28, 28, 28, 0.08);
+    box-shadow: 0 20px 40px -8px rgba(0,0,0,0.06), 0 0 4px rgba(0,0,0,0.02);
+    background: rgba(255, 255, 255, 0.85);
+}
+.flashlight-card .tech-id-label {
+    transition: all 400ms cubic-bezier(0.2, 0, 0, 1);
+    transform: translateX(6px);
+    opacity: 0.2;
+}
+.flashlight-card:hover .tech-id-label {
+    transform: translateX(0);
+    opacity: 0.6;
+}
+
+/* SVG Border Draw on hover (DS pattern) */
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.stroke-draw { 
+    stroke-dasharray: 1200; 
+    stroke-dashoffset: 1200; 
+    transition: stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1); 
+}
+.group:hover .stroke-draw { stroke-dashoffset: 0; }
+
+/* Shimmer beam on dark showcase container */
+.showcase-shimmer {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        105deg,
+        transparent 40%,
+        rgba(255,255,255,0.03) 45%,
+        rgba(255,255,255,0.06) 50%,
+        rgba(255,255,255,0.03) 55%,
+        transparent 60%
+    );
+    background-size: 200% 100%;
+    animation: showcase-sweep 6s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 5;
+}
+@keyframes showcase-sweep {
+    0%, 100% { background-position: 200% 0; }
+    50% { background-position: -200% 0; }
+}
+
+/* Tooltip (DS pattern) */
+.tooltip-box {
+    opacity: 0;
+    transform: translateY(8px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
+.group:hover .tooltip-box {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Pulse Marker 2.0 (Technical Target) */
+@keyframes target-scan {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+.pulse-marker {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: #1c1917;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    z-index: 20;
+    cursor: help;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.15), 0 0 12px rgba(0, 0, 0, 0.2);
+}
+.pulse-marker::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: pulse-ring 3s infinite ease-out;
+}
+.pulse-marker::before {
+    content: "";
+    position: absolute;
+    inset: -10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    animation: pulse-ring 3s 0.4s infinite ease-out;
+}
+.pulse-marker:hover {
+    transform: scale(1.4);
+    background: #fff;
+    border-color: #fff;
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1), 0 0 20px rgba(255, 255, 255, 0.9), 0 0 50px rgba(255, 255, 255, 0.3);
+}
+
+/* Floating Tech Labels */
+.tech-data-label {
+    font-family: 'Inter', monospace;
+    font-size: 8px;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.25);
+    position: absolute;
+    pointer-events: none;
+    z-index: 12;
+    transition: color 0.5s ease;
+}
+.showcase-container:hover .tech-data-label {
+    color: rgba(255,255,255,0.45);
+}
+
+/* Scanning Line */
+.scanning-line {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+    z-index: 14;
+    pointer-events: none;
+    animation: scan-move 8s linear infinite;
+}
+@keyframes scan-move {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Grid Ornaments (+) */
+.grid-plus {
+    position: absolute;
+    color: rgba(28,28,28,0.1);
+    font-size: 10px;
+    font-weight: 300;
+    pointer-events: none;
+    z-index: 1;
+}
+/* Blueprint dimension lines */
+.dim-line { position: absolute; background: rgba(28,28,28,0.1); pointer-events: none; z-index: 1; }
+.dim-line-h { height: 1px; width: 60px; }
+.dim-line-v { width: 1px; height: 60px; }
+.dim-label { position: absolute; font-family: var(--font-mono); font-size: 8px; color: rgba(28,28,28,0.3); text-transform: uppercase; white-space: nowrap; letter-spacing: 0.1em; }
+
+/* Blueprint Coordinate labels */
+.grid-coords { position: absolute; font-family: var(--font-mono); font-size: 7px; color: rgba(28,28,28,0.2); pointer-events: none; z-index: 1; text-transform: uppercase; }
+
+/* Circular X-Ray Mask */
+.pen-xray { 
+    position: absolute; 
+    inset: 0; 
+    z-index: 12; 
+    opacity: 0; 
+    filter: invert(1) brightness(1.8) contrast(1.1) opacity(0.8); 
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    -webkit-mask-image: radial-gradient(circle 120px at var(--x, 50%) var(--y, 50%), black 0%, transparent 100%);
+    mask-image: radial-gradient(circle 120px at var(--x, 50%) var(--y, 50%), black 0%, transparent 100%);
+}
+.showcase-container:hover .pen-xray { opacity: 1; }
+.showcase-container:hover img:not(.pen-xray) { filter: brightness(0.5) saturate(0.4); transition: filter 0.5s ease; }
+
+/* Leader Lines for labels */
+.leader-line {
+    position: absolute;
+    background: rgba(255,255,255,0.2);
+    height: 1px;
+    transform-origin: left center;
+    pointer-events: none;
+    z-index: 15;
+}
+
+/* 3D Tilt (DS pattern) */
+.tilt-3d {
+    transform-style: preserve-3d;
+    transform: perspective(1000px);
+}
+.tilt-3d-item {
+    transform: rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg)) scale(var(--scale, 1));
+    transition: transform 0.2s ease-out;
+}
+
+/* Ink Flow Plot (DS pattern) */
+.ink-flow-path {
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: drawFlow 4s linear infinite;
+}
+@keyframes drawFlow {
+    0% { stroke-dashoffset: 400; }
+    100% { stroke-dashoffset: 0; }
+}
+
+/* Data Pulse on Scanning */
+@keyframes dataPulse {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.8; filter: brightness(1.5) blur(1px); }
+}
+.scanning-line::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+    animation: dataPulse 2s ease-in-out infinite;
+}
+
+/* Light Leaks for Background Depth */
+.light-leak {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+    filter: blur(40px);
+}
+
+/* Horizontal line reveal animation */
+@keyframes line-grow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
+/* Number counter badge */
+.feature-number {
+    position: relative;
+    overflow: hidden;
+}
+.feature-number::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.group:hover .feature-number::after {
+    transform: scaleX(1);
+}
+
+/* Icon float micro animation */
+@keyframes float-subtle {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-3px); }
+}
+
+/* Dark showcase container hover glow */
+.showcase-container {
+    transition: box-shadow 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.showcase-container:hover {
+    box-shadow: 0 60px 120px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.06) inset;
+}
+
+/* Marquee infinite scroll */
+@keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+}
+
+/* ===== SECTION 3 — INSIDE THE PRECISION ===== */
+.exploded-label {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    z-index: 15;
+    pointer-events: auto;
+    cursor: default;
+    transition: all 400ms cubic-bezier(0.2, 0, 0, 1);
+    transform: translateX(-50%); /* Base horizontal centering */
+}
+.exploded-label .label-text {
+    font-family: 'Inter', monospace;
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: #1c1917;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 8px 18px;
+    border-radius: 100px;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    transition: all 400ms cubic-bezier(0.2, 0, 0, 1);
+}
+.exploded-label:hover {
+    transform: translate(-50%, -4px); /* Hover elevation + centering */
+}
+.exploded-label:hover .label-text {
+    border-color: rgba(0, 0, 0, 0.25);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    letter-spacing: 0.3em;
+    background: #fff;
+}
+.exploded-label .label-sub {
+    font-family: 'Inter', monospace;
+    font-size: 7px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #78716c;
+    transition: all 400ms cubic-bezier(0.2, 0, 0, 1);
+}
+.exploded-label:hover .label-sub {
+    color: #1c1917;
+    letter-spacing: 0.25em;
+}
+.connector-line-wrapper {
+    width: 1px;
+    height: 42px;
+    position: relative;
+    overflow: hidden;
+    background: rgba(168, 162, 158, 0.15);
+}
+.connector-line-inner {
+    width: 100%;
+    height: 100%;
+    background: #a8a29e;
+    transform-origin: top;
+    transform: scaleY(0); /* Controlled by GSAP/ScrollTrigger */
+}
+.connector-line-wrapper.up .connector-line-inner {
+    transform-origin: bottom;
+}
+.exploded-label:hover .connector-line-inner {
+    background: #1c1917;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+.section-divider {
+    width: 0;
+    height: 1px;
+    background: #d6d3d1;
+    transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.section-divider.expanded {
+    width: 100%;
+}
+
+iconify-icon { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; }

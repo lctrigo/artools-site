@@ -1,0 +1,72 @@
+<!-- Section 4: Visual Impact & Value Reinforcement -->
+<section id="impact-statement" class="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#111]">
+    
+    <!-- Video Background -->
+    <div class="absolute inset-0 w-full h-full z-0 pointer-events-none">
+        <!-- Overlay for contrast (darkens the video) -->
+        <div class="absolute inset-0 bg-stone-950/60 z-10 mix-blend-multiply"></div>
+        <!-- Optional subtle gradient to ensure text readability -->
+        <div class="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-950/20 to-stone-950/80 z-10 opacity-90"></div>
+        
+        <video 
+            class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-[2s] ease-in-out"
+            autoplay 
+            loop 
+            muted 
+            playsinline
+            preload="none"
+            poster="assets/raw_files/frames/frame_060.jpg"
+            id="s4-bg-video"
+            style="mix-blend-mode: normal; filter: none;"
+        >
+            <source src="assets/raw_files/00-video-flow-1080.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- Content Box -->
+    <div class="relative z-20 container mx-auto px-6 md:px-12 flex items-center justify-center">
+        
+        <!-- Central Highlight Box (Glassmorphism + Soft Glow) -->
+        <div class="max-w-2xl w-full text-center p-10 md:p-14 rounded-[2rem] dark-glass shadow-[0_0_80px_rgba(255,255,255,0.03)] border border-white/10 relative overflow-hidden group s4-content-box will-change-transform">
+            
+            <!-- Inner glow (responsive, subtle) -->
+            <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+            <!-- Diffuse subtle spots -->
+            <div class="absolute -top-32 -left-32 w-64 h-64 bg-white/5 blur-[60px] rounded-full pointer-events-none opacity-40 group-hover:opacity-70 transition-opacity duration-700"></div>
+            <div class="absolute -bottom-32 -right-32 w-64 h-64 bg-white/5 blur-[60px] rounded-full pointer-events-none opacity-40 group-hover:opacity-70 transition-opacity duration-700"></div>
+
+            <div class="relative z-10 flex flex-col items-center">
+                
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="w-1.5 h-1.5 rounded-full bg-white/80 animate-pulse shadow-[0_0_8px_rgba(255,255,255,0.8)]"></span>
+                    <span class="font-mono text-[9px] uppercase tracking-[0.3em] text-white/60 font-semibold">Desempenho Contínuo</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-white/80 animate-pulse shadow-[0_0_8px_rgba(255,255,255,0.8)]"></span>
+                </div>
+
+                <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter text-white mb-6 leading-[1.05]">
+                    Ideias não esperam. <br>
+                    <span class="text-white/50 italic font-medium">Sua caneta também não.</span>
+                </h2>
+
+                <p class="font-sans text-sm md:text-base text-white/70 max-w-md mx-auto leading-relaxed mb-10 font-medium">
+                    O design aerodinâmico e o fluxo contínuo eliminam qualquer barreira entre o seu pensamento e o papel. Zero falhas.
+                </p>
+
+                <!-- Primary CTA adapted for Dark Background -->
+                <a href="#" class="group/cta-light relative flex items-center justify-center overflow-hidden rounded-full p-[1px] leading-none text-white drop-shadow-2xl transition-transform hover:scale-105 duration-400">
+                    <span class="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_340deg,rgba(255,255,255,0.5)_360deg)] opacity-50"></span>
+                    <span class="relative flex h-full w-full items-center justify-center rounded-full bg-stone-900 px-8 py-4 ring-1 ring-white/20 overflow-hidden transition-all group-hover/cta-light:bg-black group-hover/cta-light:ring-white/40">
+                        <span class="absolute top-0 left-0 h-full w-full -skew-x-12 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover/cta-light:animate-[shimmer_1.5s_infinite] group-hover/cta-light:opacity-100 pointer-events-none"></span>
+                        <span class="relative z-10 font-mono text-[9px] uppercase tracking-[0.25em] font-bold text-white">
+                            Experimentar Agora
+                        </span>
+                        <iconify-icon class="relative z-10 ml-3 text-sm group-hover/cta-light:translate-x-1 transition-transform text-white" icon="lucide:arrow-right"></iconify-icon>
+                    </span>
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+
+</section>

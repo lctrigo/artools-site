@@ -1,0 +1,36 @@
+{
+  "name": "artools",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lctrigo/artools-site.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/lctrigo/artools-site/issues"
+  },
+  "homepage": "https://github.com/lctrigo/artools-site#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.14",
+    "tailwindcss": "^4.2.4",
+    "vite": "^8.0.10",
+    "vite-plugin-handlebars": "^2.0.3"
+  },
+  "dependencies": {
+    "@studio-freight/lenis": "^1.0.42",
+    "@tailwindcss/postcss": "^4.2.4",
+    "gsap": "^3.15.0",
+    "lucide-static": "^1.14.0"
+  }
+}

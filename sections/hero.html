@@ -1,0 +1,91 @@
+<!-- Scroll Track container to drive the video timeline -->
+<div class="scroll-space w-full" style="height: 400vh;">
+    
+    <!-- Pinned Content (Stays on screen while scrolling) -->
+    <main class="pinned-section relative w-full h-screen overflow-hidden" id="hero-pin">
+        
+        <!-- Background Canvas Wrapper for Extracted Frames -->
+        <div class="video-wrapper pointer-events-none" id="video-wrapper">
+            <canvas 
+                id="hero-canvas"
+                class="opacity-0 w-full h-full object-cover transform scale-[1.05]">
+            </canvas>
+            
+            <!-- Micro UI Element 1: Material Hint -->
+            <div class="absolute top-[30%] right-[10%] flex items-center gap-3 opacity-0 ui-element pointer-events-none">
+                <div class="w-10 h-[1px] bg-slate-400"></div>
+                <span class="font-mono text-[9px] text-slate-500 tracking-[0.2em]">Ti-6Al-4V</span>
+            </div>
+        </div>
+
+        <!-- Overlay Content (Text & CTAs) -->
+        <div class="relative z-10 w-full h-full flex flex-col items-start justify-end lg:justify-center px-6 md:px-12 lg:px-24 pb-28 md:pb-36 lg:pb-0 pointer-events-none content-wrapper">
+            
+            <!-- Headline & Controls Wrapper -->
+            <div class="flex flex-col items-start text-left max-w-3xl opacity-100">
+                
+                <!-- Label -->
+                <div class="overflow-hidden mb-6 hero-label">
+                    <div class="flex items-center gap-3 font-mono text-[10px] tracking-[0.3em] uppercase text-slate-500 reveal-item mix-blend-multiply">
+                        <span class="w-1.5 h-1.5 rounded-full bg-black animate-pulse shadow-[0_0_8px_rgba(0,0,0,0.3)]"></span>
+                        Precision Series
+                    </div>
+                </div>
+                
+                <!-- Headline (3 Layers: Solid, Outline, Solid) -->
+                <h1 class="hero-headline font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.95] mb-8 text-black mix-blend-multiply">
+                    <div class="overflow-hidden pb-1"><div class="reveal-item flex gap-4 justify-start">Write <span class="text-outline italic">with</span></div></div>
+                    <div class="overflow-hidden pb-1"><div class="reveal-item">absolute clarity.</div></div>
+                </h1>
+                
+                <!-- Paragraph -->
+                <div class="overflow-hidden mb-12 hero-desc">
+                    <p class="font-sans text-slate-600 text-sm md:text-base leading-relaxed max-w-md reveal-item font-medium mix-blend-multiply">
+                        Engineered from aerospace-grade aero-titanium. The perfect balance of weight, aerodynamics, and a timeless minimalist aesthetic.
+                    </p>
+                </div>
+                
+                <!-- CTAs -->
+                <div class="hero-cta flex flex-col sm:flex-row items-start lg:items-center justify-start gap-4 pt-2 pointer-events-auto w-full sm:w-auto">
+                    
+                    <!-- Primary Button -->
+                    <div class="reveal-item w-full sm:w-auto">
+                        <a href="#" class="w-full sm:w-auto group relative flex items-center justify-center overflow-hidden rounded-full p-[1px] leading-none text-white shadow-premium hover:shadow-premium-hover hover:scale-[1.02] transition-all duration-300 ease-premium">
+                            <span class="absolute inset-[-1000%] animate-[spin_2.5s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_340deg,rgba(0,0,0,0.8)_360deg)] opacity-40"></span>
+                            <span class="relative flex h-full w-full items-center justify-center rounded-full bg-[#111] px-8 py-4 ring-1 ring-black/10 overflow-hidden transition-all group-hover:bg-black">
+                                <span class="absolute top-0 left-0 h-full w-full -skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:animate-[shimmer_1s_infinite] group-hover:opacity-100 pointer-events-none"></span>
+                                <span class="relative z-10 font-mono text-[9px] uppercase tracking-[0.25em] font-bold">
+                                    Pre-order Now
+                                </span>
+                                <iconify-icon class="relative z-10 ml-3 text-sm group-hover:translate-x-1 transition-transform" icon="lucide:arrow-right"></iconify-icon>
+                            </span>
+                        </a>
+                    </div>
+                    
+                    <!-- Secondary Button -->
+                    <div class="reveal-item w-full sm:w-auto">
+                        <a href="#" class="w-full sm:w-auto group flex items-center justify-center gap-3 px-8 py-4 rounded-full border border-slate-300 text-slate-800 bg-white/50 backdrop-blur-sm font-mono text-[9px] uppercase tracking-[0.25em] hover:bg-white hover:text-black transition-all duration-300">
+                            <span>Tech Specs</span>
+                            <iconify-icon class="text-xs opacity-50 group-hover:opacity-100 transition-opacity" icon="lucide:info"></iconify-icon>
+                        </a>
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Micro UI Element 3: Index Tracker -->
+        <div class="absolute bottom-10 right-8 font-mono text-[10px] text-slate-400 opacity-0 ui-element tabular-nums pointer-events-none tracking-widest hidden md:block z-10">
+            [<span id="video-frame-tracker">000</span>]
+        </div>
+
+        <!-- Bottom safe scroll hint layout -->
+        <div class="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-50 parallax-hint reveal-item z-10 pointer-events-none delay-500">
+            <span class="font-mono text-[8px] uppercase tracking-[0.3em] text-slate-600">Scroll</span>
+            <div class="w-[1px] h-8 md:h-12 bg-gradient-to-b from-slate-400 to-transparent"></div>
+        </div>
+        
+    </main>
+    
+</div>

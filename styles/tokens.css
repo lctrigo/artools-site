@@ -1,0 +1,19 @@
+:root {
+  /* Colors */
+  --color-surface: #fafafa;
+  --color-ink: #111111;
+  --color-offwhite: #fafaf9;
+  --color-stone-900: #1c1c1c;
+  --color-stone-500: #78716c;
+  --color-stone-300: #d6d3d1;
+  
+  /* Animations */
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: all 400ms var(--ease-premium);
+}
+
+/* Base Styles */
+.selection-area {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #000;
+}

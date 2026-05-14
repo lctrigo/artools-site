@@ -1,0 +1,312 @@
+<!-- Section 2: Premium Tech Showcase – Second Fold -->
+<section id="technical-architecture" class="relative min-h-screen bg-offwhite overflow-hidden border-t border-stone-200">
+    <!-- Light Leaks for Depth -->
+    <div class="light-leak -top-20 -left-20 opacity-30"></div>
+    <div class="light-leak bottom-0 -right-20 opacity-20"></div>
+
+    <!-- Minimal Grid Pattern Overlay + Plus Markers -->
+    <div class="absolute inset-0 grid-overlay pointer-events-none opacity-30"></div>
+    
+    <!-- Blueprint Dimensions & Coords -->
+    <div class="dim-line dim-line-v top-[10%] left-[5%]"></div>
+    <div class="dim-label top-[10%] left-[calc(5%+8px)]">H: 142mm</div>
+    <div class="dim-line dim-line-h bottom-[10%] right-[10%]"></div>
+    <div class="dim-label bottom-[calc(10%+8px)] right-[10%]">W: 8.2mm</div>
+    
+    <div class="grid-coords top-8 right-12">REF_SYSTEM: ARCH.4.0</div>
+    <div class="grid-coords bottom-8 left-12">COORD: 46° 49' 25.2" N</div>
+
+    <!-- Grid Ornaments (+) -->
+    <span class="grid-plus top-[15%] left-[10%]">+</span>
+    <span class="grid-plus top-[15%] right-[10%]">+</span>
+    <span class="grid-plus bottom-[15%] left-[10%]">+</span>
+    <span class="grid-plus bottom-[15%] right-[10%]">+</span>
+    <span class="grid-plus top-1/2 left-[5%] -translate-y-1/2">+</span>
+    <span class="grid-plus top-1/2 right-[5%] -translate-y-1/2">+</span>
+
+    <div class="relative z-10 container mx-auto px-6 md:px-12 lg:px-24 py-24 lg:py-36">
+        
+        <!-- 1. Header Row – Left Aligned -->
+        <div class="max-w-5xl mb-16 lg:mb-24 px-1">
+            <div class="overflow-hidden mb-8">
+                <div class="flex items-center gap-4 tech-reveal-item">
+                    <div class="w-8 h-[1px] bg-stone-400"></div>
+                    <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-stone-500 font-semibold">02 / Technical Architecture</span>
+                </div>
+            </div>
+
+            <h2 class="font-display text-4xl md:text-5xl lg:text-5xl font-bold tracking-tight text-stone-900 mb-8 leading-[1.05] max-w-3xl">
+                <div class="overflow-hidden mb-1"><div class="tech-reveal-item">Precisão <span class="text-outline">milimétrica</span></div></div>
+                <div class="overflow-hidden"><div class="tech-reveal-item">em suas mãos.</div></div>
+            </h2>
+            
+            <p class="font-mono text-[11px] uppercase tracking-[0.15em] text-stone-500 max-w-lg leading-relaxed overflow-hidden">
+                <span class="tech-reveal-item block">Revestida em alumínio aeroespacial e calibrada com engenharia suíça, a ARTOOLS Precision Series registra cada traço com autoridade.</span>
+            </p>
+        </div>
+
+        <!-- 2. Content Grid (Visual vs Features) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-0 items-start">
+            
+            <!-- Left: Premium Pen Showcase -->
+            <div class="lg:col-span-6 relative group tech-visual-reveal">
+                <div class="showcase-container relative aspect-video lg:aspect-[4/3] rounded-3xl overflow-hidden bg-[#F9F9F9] shadow-[0_45px_100px_rgba(0,0,0,0.08)] flex items-center justify-center border border-[#EAEAEA]">
+                    
+                    <!-- Scanning Line effect -->
+                    <div class="scanning-line"></div>
+
+                    <!-- SVG Border Draw on Hover -->
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none rounded-3xl" style="z-index: 15;">
+                        <rect x="0.5" y="0.5" width="calc(100% - 1px)" height="calc(100% - 1px)" rx="24" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" class="stroke-draw opacity-20 group-hover:opacity-100 transition-opacity" />
+                    </svg>
+
+                    <!-- Floating Tech Labels (Coordinates) -->
+                    <div class="tech-data-label top-10 left-10">DATA_PT: 0.122</div>
+                    <div class="tech-data-label top-10 right-10">FLOW_CAL: 98%</div>
+                    <div class="tech-data-label bottom-10 right-10">SWISS_ARCH_PROTO</div>
+                    <div class="tech-data-label bottom-10 left-10">GRID_REF: 44.02</div>
+
+                    <!-- Technical Grid Background -->
+                    <div class="absolute inset-0 grid-overlay opacity-[0.08] pointer-events-none"></div>
+                    
+                    <!-- Subtle gradient glow behind pen -->
+                    <div class="absolute inset-0 bg-gradient-to-br from-white/[0.05] via-transparent to-white/[0.02] pointer-events-none"></div>
+
+                    <!-- Shimmer Beam -->
+                    <div class="showcase-shimmer rounded-3xl"></div>
+
+                    <img src="assets/pen_uncapped_premium_macro_v2.png" 
+                         alt="ARTOOLS Precision Pen – Macro close-up" 
+                         class="relative z-10 w-full h-full object-cover transform scale-[1.03] group-hover:scale-[1.06] transition-all duration-[1s] ease-out tech-parallax-img">
+
+                    <!-- Blueprint/X-Ray Overlay Image (Cursor Mask) -->
+                    <img src="assets/pen_uncapped_premium_macro_v2.png" 
+                         alt="ARTOOLS Precision Pen – Blueprint Reveal" 
+                         class="pen-xray w-full h-full object-cover scale-[1.03] tech-parallax-img">
+
+                    <!-- Interactive Pulse Markers 2.0 (High Precision) -->
+                    
+                    <!-- 1. Ponta de Precisão (Exactly at the Nib Tip) -->
+                    <div id="marker-tip" class="pulse-marker top-[86.5%] right-[11.5%] group/dot">
+                        <div class="absolute right-10 top-1/2 -translate-y-1/2 bg-stone-950 px-5 py-3 rounded-2xl opacity-0 group-hover/dot:opacity-100 transition-all duration-500 scale-90 group-hover/dot:scale-100 whitespace-nowrap z-40 shadow-[0_30px_60px_rgba(0,0,0,0.5)] border border-white/20">
+                            <div class="flex items-center gap-4">
+                                <div class="w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_12px_#fff] animate-pulse"></div>
+                                <div class="flex flex-col">
+                                    <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-white font-black">Ponta Micrométrica</span>
+                                    <span class="font-mono text-[8px] uppercase tracking-widest text-white/50">Calibração: 0.1mm // SWISS_STD</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Liga 7075-T6 (At the Body - Middle) -->
+                    <div id="marker-body" class="pulse-marker top-[47%] left-[42%] group/dot">
+                        <div class="absolute -left-4 top-6 bg-stone-950 px-5 py-3 rounded-2xl opacity-0 group-hover/dot:opacity-100 transition-all duration-500 scale-90 group-hover/dot:scale-100 whitespace-nowrap z-40 shadow-[0_30px_60px_rgba(0,0,0,0.5)] border border-white/20">
+                            <div class="flex items-center gap-4">
+                                <iconify-icon icon="lucide:shield-check" class="text-white text-lg"></iconify-icon>
+                                <div class="flex flex-col">
+                                    <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-white font-black">Alumínio 7075-T6</span>
+                                    <span class="font-mono text-[8px] uppercase tracking-widest text-white/50">Material: Aerospace Grade // REF_ID: 02</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Sistema de Fluxo (Towards the Back - Left) -->
+                    <div id="marker-ink" class="pulse-marker top-[28%] left-[30%] group/dot">
+                        <div class="absolute left-6 bottom-6 bg-stone-950 px-5 py-3 rounded-2xl opacity-0 group-hover/dot:opacity-100 transition-all duration-500 scale-90 group-hover/dot:scale-100 whitespace-nowrap z-40 shadow-[0_30px_60px_rgba(0,0,0,0.5)] border border-white/20">
+                            <div class="flex items-center gap-4">
+                                <iconify-icon icon="lucide:zap" class="text-white text-lg"></iconify-icon>
+                                <div class="flex flex-col">
+                                    <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-white font-black">Fluxo Nanométrico™</span>
+                                    <span class="font-mono text-[8px] uppercase tracking-widest text-white/50">Tinta: Anti-Gravity Tech // MOL_FUSE</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Corner Glass Badge -->
+                    <div class="absolute top-5 left-5 glass-panel dark-glass px-4 py-2 rounded-full flex items-center gap-2 z-20 opacity-80 group-hover:opacity-100 transition-all duration-700 hover:scale-105">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse shadow-[0_0_8px_#fff]"></span>
+                        <span class="font-mono text-[8px] uppercase tracking-[0.25em] text-white font-bold">Precision Series</span>
+                    </div>
+
+                    <!-- Internal Frame Label -->
+                    <div class="absolute bottom-5 left-6 font-mono text-[9px] text-white/15 tracking-[0.4em] uppercase z-20 group-hover:text-white/40 group-hover:tracking-[0.5em] transition-all duration-1000">
+                        SWISS GRADE // SPEC.04
+                    </div>
+                </div>
+
+                <!-- Technical Block Below Image (Solidified Order: Stats -> Quote -> Buttons) -->
+                <div class="mt-12 space-y-10 group/tech-blocks">
+                    
+                    <!-- 1. Stats Row (Primary Technical Data) -->
+                    <div id="tech-stats-block" class="grid grid-cols-3 gap-3 tech-reveal-item z-10 relative">
+                        <div class="bg-white/80 backdrop-blur-md border border-stone-200/50 rounded-xl p-5 text-center hover:bg-white hover:border-stone-300 hover:shadow-premium transition-all duration-500 group/stat relative overflow-hidden">
+                            <span class="block font-display text-2xl lg:text-3xl font-bold text-stone-900 tracking-tighter group-hover/stat:scale-105 transition-transform tabular-nums relative z-10"><span class="stat-value" data-count="0.02">0.00</span><span class="text-stone-400 text-sm ml-0.5">mm</span></span>
+                            <span class="block font-mono text-[7px] text-stone-400 uppercase tracking-[0.2em] mt-1.5 font-bold group-hover/stat:text-stone-600 transition-colors relative z-10">Tolerância</span>
+                        </div>
+                        <div class="bg-white/80 backdrop-blur-md border border-stone-200/50 rounded-xl p-5 text-center hover:bg-white hover:border-stone-300 hover:shadow-premium transition-all duration-500 group/stat cursor-default">
+                            <span class="block font-display text-2xl lg:text-3xl font-bold text-stone-900 tracking-tighter group-hover/stat:scale-105 transition-transform tabular-nums"><span class="stat-value" data-count="7075">0000</span><span class="text-stone-400 text-sm ml-0.5">-T6</span></span>
+                            <span class="block font-mono text-[7px] text-stone-400 uppercase tracking-[0.2em] mt-1.5 font-bold group-hover/stat:text-stone-600 transition-colors">Liga Aeroespacial</span>
+                        </div>
+                        <div class="bg-white/80 backdrop-blur-md border border-stone-200/50 rounded-xl p-5 text-center hover:bg-white hover:border-stone-300 hover:shadow-premium transition-all duration-500 group/stat cursor-default">
+                            <span class="block font-display text-2xl lg:text-3xl font-bold text-stone-900 tracking-tighter group-hover/stat:scale-105 transition-transform"><span class="italic font-medium">Nano</span><span class="text-stone-400 text-sm">™</span></span>
+                            <span class="block font-mono text-[7px] text-stone-400 uppercase tracking-[0.2em] mt-1.5 font-bold group-hover/stat:text-stone-600 transition-colors">Fusão Molecular</span>
+                        </div>
+                    </div>
+
+                    <!-- 2. Highlight Quote (Inspiration/Team Statement) -->
+                    <div id="tech-quote-block" class="tech-feature-card group/quote relative opacity-80 hover:opacity-100 transition-opacity z-10">
+                        <blockquote class="border-l border-stone-800 pl-6 py-2 bg-transparent transition-all duration-700">
+                            <p class="font-display text-xl md:text-2xl font-medium text-stone-800 leading-tight tracking-tight">
+                                "Fluidez instantânea que nunca falha."
+                            </p>
+                            <cite class="not-italic font-mono text-[8px] text-stone-400 uppercase tracking-[0.3em] mt-4 flex items-center justify-start gap-3">
+                                <span class="w-6 h-px bg-stone-300"></span>
+                                ARTOOLS ENGINEERING TEAM
+                            </cite>
+                        </blockquote>
+                    </div>
+
+                    <!-- 3. Material Palette (Component Legend) -->
+                    <div id="tech-palette-block" class="flex items-center justify-start gap-6 tech-reveal-item opacity-80 hover:opacity-100 transition-opacity z-10">
+                        <div class="flex -space-x-2">
+                            <div class="w-8 h-8 rounded-full border border-stone-200 bg-white shadow-sm flex items-center justify-center font-mono text-[7px] font-bold text-stone-800 hover:z-10 hover:scale-110 hover:shadow-md transition-all cursor-pointer" title="CH: Swiss Engineering">CH</div>
+                            <div class="w-8 h-8 rounded-full border border-stone-200 bg-stone-100 shadow-sm flex items-center justify-center font-mono text-[7px] font-bold text-stone-600 hover:z-10 hover:scale-110 hover:shadow-md transition-all cursor-pointer" title="AL: 7075 Aluminum">AL</div>
+                            <div class="w-8 h-8 rounded-full border border-stone-200 bg-stone-50 shadow-sm flex items-center justify-center font-mono text-[7px] font-bold text-stone-400 hover:z-10 hover:scale-110 hover:shadow-md transition-all cursor-pointer" title="FN: Nanofusion Ink">FN</div>
+                        </div>
+                        <div class="text-left">
+                            <span class="block font-mono text-[9px] text-stone-400 uppercase tracking-[0.3em] font-bold">Swiss Grade</span>
+                            <span class="block font-mono text-[8px] text-stone-300 uppercase tracking-widest mt-0.5">Components Palette</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Premium Feature Cards -->
+            <div class="lg:col-start-8 lg:col-span-5 flex flex-col gap-5 pt-0">
+
+                <!-- Item 01: Engenharia Suíça -->
+                <div class="flashlight-card p-6 lg:p-8 rounded-[1.25rem] group tech-feature-card relative overflow-hidden text-left">
+                    <!-- Grid Ornaments inside card -->
+                    <span class="absolute top-5 right-6 font-mono text-[6px] text-stone-400 tracking-[0.3em] tech-id-label uppercase">ID: PARAM_CH // REF: 07-SWISS</span>
+                    
+                    <!-- SVG Border Draw -->
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none rounded-[1.25rem]" style="z-index: 2;">
+                        <rect x="0.5" y="0.5" width="calc(100% - 1px)" height="calc(100% - 1px)" rx="19" fill="none" stroke="rgba(28,28,28,0.15)" stroke-width="1" class="stroke-draw opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </svg>
+
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-4 mb-5">
+                            <div class="w-8 h-8 rounded-full bg-stone-900 border border-stone-800 flex items-center justify-center shadow-lg feature-number group-hover:bg-black transition-all duration-500">
+                                <span class="text-[9px] font-mono font-bold text-white">01</span>
+                            </div>
+                            <div class="h-px flex-1 relative bg-stone-200/50 overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-r from-stone-400 to-stone-500 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-premium"></div>
+                            </div>
+                            <iconify-icon icon="lucide:settings-2" class="text-stone-400 text-lg group-hover:text-stone-900 transition-colors duration-500 ease-premium"></iconify-icon>
+                        </div>
+                        <h3 class="font-display text-lg lg:text-xl font-bold text-stone-900 mb-2 tracking-tight group-hover:translate-x-1 transition-transform duration-500 ease-premium">Engenharia Suíça</h3>
+                        <p class="text-stone-500 group-hover:text-stone-600 leading-relaxed text-xs lg:text-sm font-medium transition-colors duration-500 ease-premium">
+                            Tolerâncias micrométricas de 0,02mm. Cada componente é usinado com a disciplina relojoeira suíça para um encaixe impecável.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Item 02: Alumínio Aeroespacial -->
+                <div class="flashlight-card p-6 lg:p-8 rounded-[1.25rem] group tech-feature-card relative overflow-hidden text-left">
+                    <span class="absolute top-5 right-6 font-mono text-[6px] text-stone-400 tracking-[0.3em] tech-id-label uppercase">ID: MAT_7075 // REF: 02-AERO</span>
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none rounded-[1.25rem]" style="z-index: 2;">
+                        <rect x="0.5" y="0.5" width="calc(100% - 1px)" height="calc(100% - 1px)" rx="19" fill="none" stroke="rgba(28,28,28,0.15)" stroke-width="1" class="stroke-draw opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </svg>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-4 mb-5">
+                            <div class="w-8 h-8 rounded-full bg-stone-900 border border-stone-800 flex items-center justify-center shadow-lg feature-number group-hover:bg-black transition-all duration-500">
+                                <span class="text-[9px] font-mono font-bold text-white">02</span>
+                            </div>
+                            <div class="h-px flex-1 relative bg-stone-200/50 overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-r from-stone-400 to-stone-500 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-premium"></div>
+                            </div>
+                            <iconify-icon icon="lucide:shield" class="text-stone-400 text-lg group-hover:text-stone-900 transition-colors duration-500 ease-premium"></iconify-icon>
+                        </div>
+                        <h3 class="font-display text-lg lg:text-xl font-bold text-stone-900 mb-2 tracking-tight group-hover:translate-x-1 transition-transform duration-500 ease-premium">Alumínio Aeroespacial</h3>
+                        <p class="text-stone-500 group-hover:text-stone-600 leading-relaxed text-xs lg:text-sm font-medium transition-colors duration-500 ease-premium">
+                            Liga 7075-T6. Integridade estrutural inabalável com peso pluma, permitindo sessões criativas extensas sem fadiga.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Item 03: Tinta Fusão Nanométrica -->
+                <div class="flashlight-card p-6 lg:p-8 rounded-[1.25rem] group tech-feature-card relative overflow-hidden text-left">
+                    <span class="absolute top-5 right-6 font-mono text-[6px] text-stone-400 tracking-[0.3em] tech-id-label uppercase">ID: INK_NANO // REF: 04-MOLEC</span>
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none rounded-[1.25rem]" style="z-index: 2;">
+                        <rect x="0.5" y="0.5" width="calc(100% - 1px)" height="calc(100% - 1px)" rx="19" fill="none" stroke="rgba(28,28,28,0.15)" stroke-width="1" class="stroke-draw opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </svg>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-4 mb-5">
+                            <div class="w-8 h-8 rounded-full bg-stone-900 border border-stone-800 flex items-center justify-center shadow-lg feature-number group-hover:bg-black transition-all duration-500">
+                                <span class="text-[9px] font-mono font-bold text-white">03</span>
+                            </div>
+                            <div class="h-px flex-1 relative bg-stone-200/50 overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-r from-stone-400 to-stone-500 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-premium"></div>
+                            </div>
+                            <iconify-icon icon="lucide:droplets" class="text-stone-400 text-lg group-hover:text-stone-900 transition-colors duration-500 ease-premium"></iconify-icon>
+                        </div>
+                        <h3 class="font-display text-lg lg:text-xl font-bold text-stone-900 mb-2 tracking-tight group-hover:translate-x-1 transition-transform duration-500 ease-premium">Tinta Fusão Nanométrica™</h3>
+                        <p class="text-stone-500 group-hover:text-stone-600 leading-relaxed text-xs lg:text-sm font-medium transition-colors duration-500 ease-premium">
+                            Pigmentação molecular de secagem instantânea. Pretos profundos e absolutos que resistem ao tempo, luz e água.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- CTA Row -->
+                <div class="flex items-center justify-start gap-4 mt-2 tech-feature-card">
+                    <a href="#" class="group/cta relative flex items-center justify-center overflow-hidden rounded-full p-[1px] leading-none text-stone-900 drop-shadow-sm transition-transform hover:scale-105 duration-300">
+                        <span class="absolute inset-[-1000%] animate-[spin_2.5s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_340deg,rgba(0,0,0,0.4)_360deg)] opacity-40"></span>
+                        <span class="relative flex h-full w-full items-center rounded-full bg-stone-900 px-5 py-3 ring-1 ring-stone-800 overflow-hidden transition-all group-hover/cta:bg-black">
+                            <span class="absolute top-0 left-0 h-full w-full -skew-x-12 bg-gradient-to-r from-transparent via-white/15 to-transparent opacity-0 group-hover/cta:animate-[shimmer_1.5s_infinite] group-hover/cta:opacity-100 pointer-events-none"></span>
+                            <span class="relative z-10 font-mono text-[8px] uppercase tracking-[0.25em] font-bold text-white">Explorar Specs</span>
+                            <iconify-icon class="relative z-10 ml-2 text-xs text-white/60 group-hover/cta:text-white group-hover/cta:translate-x-1 transition-all" icon="lucide:arrow-right"></iconify-icon>
+                        </span>
+                    </a>
+                    <a href="#" class="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.2em] text-stone-500 hover:text-stone-900 transition-colors border-b border-stone-300 hover:border-stone-900 pb-0.5">
+                        Downloads <iconify-icon icon="lucide:download" class="text-[10px] ml-1"></iconify-icon>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Marquee Tech Strip -->
+    <div class="border-t border-stone-200 py-4 overflow-hidden relative z-10 bg-stone-100/50 tech-marquee-reveal">
+        <div class="flex overflow-hidden">
+            <div class="flex shrink-0 animate-[marquee_25s_linear_infinite] gap-8 items-center min-w-full justify-around">
+                <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-stone-500 whitespace-nowrap">Engenharia Suíça</span>
+                <span class="text-stone-300">•</span>
+                <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-stone-500 whitespace-nowrap">Alumínio Aeroespacial 7075-T6</span>
+                <span class="text-stone-300">•</span>
+                <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-stone-500 whitespace-nowrap">Tinta Fusão Nanométrica™</span>
+                <span class="text-stone-300">•</span>
+                <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-stone-500 whitespace-nowrap">Precisão Micrométrica 0.02mm</span>
+                <span class="text-stone-300">•</span>
+                <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-stone-500 whitespace-nowrap">Secagem Instantânea</span>
+                <span class="text-stone-300">•</span>
+            </div>
+            <!-- Clone for seamless loop -->
+            <div class="flex shrink-0 animate-[marquee_25s_linear_infinite] gap-8 items-center min-w-full justify-around">
+                <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-stone-500 whitespace-nowrap">Engenharia Suíça</span>
+                <span class="text-stone-300">•</span>
+                <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-stone-500 whitespace-nowrap">Alumínio Aeroespacial 7075-T6</span>
+                <span class="text-stone-300">•</span>
+                <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-stone-500 whitespace-nowrap">Tinta Fusão Nanométrica™</span>
+                <span class="text-stone-300">•</span>
+                <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-stone-500 whitespace-nowrap">Precisão Micrométrica 0.02mm</span>
+                <span class="text-stone-300">•</span>
+                <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-stone-500 whitespace-nowrap">Secagem Instantânea</span>
+                <span class="text-stone-300">•</span>
+            </div>
+        </div>
+    </div>
+</section>
